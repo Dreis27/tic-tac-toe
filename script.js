@@ -6,10 +6,14 @@
         return symbol;
     };
 
-    return{getSymbol};
+    const setSymbol = (symbol) =>{
+        this.symbol = symbol;
+    };
+
+    return{getSymbol, setSymbol};
  };
  
- const gameBoard = (() => {
+ const GameBoard = () => {
     const board = ["","","","","","","","",""];
     const setField = (index, symbol) =>{
         if (index > board.length) return;
@@ -71,6 +75,17 @@
     }
 
     return{drawBoard, checkResult, setField, getField, clear, populateField };
- })();
+ };
+const GameController = () => {
+    const board = GameBoard();
+    const player1 = Player("x");
+    const player2 = Player("o");
 
+    let activePlayer = player1;
+
+    const switchTurn = () => {
+        activePlayer = (activePlayer === player1 ? player2 : player1);
+    }
+
+};
  
