@@ -33,37 +33,8 @@
     const populateField = (player,index) => {
         if(board[index]!=="" || index > 8) return;
         board[index] = player.getSymbol();
-    }
-    
-    const drawBoard = () => {
-        const container = document.getElementById('game-grid');
-        container.innerHTML = ''; 
-        board.forEach((element,index) => {
-            const cellDiv = document.createElement('div');
-            cellDiv.className = 'cell';
-            cellDiv.textContent = board[index];
-            cellDiv.addEventListener('click', function(){
-                if (board[index]!=="") return;
-                board[index]=symbol;
-                moveCount++;
-                if((symbol==="x")){
-                    symbol="o";
-                } else if (symbol==="o"){
-                    symbol="x";
-                }
 
-
-                drawBoard();
-                if (checkResult() !== undefined){
-                    console.log(checkResult());
-                }
-                else if (moveCount>=9){
-                    console.log("Tie!")
-                }
-            });
-            
-            container.appendChild(cellDiv);
-        });
+        console.log(board);
     }
 
     const checkResult = () => {
@@ -74,7 +45,7 @@
             }
     }
 
-    return{drawBoard, checkResult, setField, getField, clear, populateField};
+    return{ checkResult, setField, getField, clear, populateField};
  };
 
 
@@ -112,24 +83,27 @@ const GameController = () => {
  
 const ScreenController = () => {
     const game = GameController();
-    const cells = document.querySelector('.field');
+    const cells = document.querySelectorAll('.field');
 
-
-    const clickHandler = () => {
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
         cells.forEach((cell, index) => {
-            cell.addEventListener('click', board.populateField(activePlayer, index));
+            cell.addEventListener('click', board.populateField(activePlayer,index));
         })
-    }
+
 
     const updateScreen = () => {
-        const board = game.getBoard();
 
         cells.forEach((cell, index) => {
             cell.innerHTML = board.getField(index);
         })
     }
+        updateScreen();
 
+        return{updateScreen};
 }
+ScreenController();
+
+
+
