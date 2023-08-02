@@ -74,14 +74,20 @@
             }
     }
 
-    return{drawBoard, checkResult, setField, getField, clear, populateField };
+    return{drawBoard, checkResult, setField, getField, clear, populateField};
  };
+
+
 const GameController = () => {
     const board = GameBoard();
     const player1 = Player("x");
     const player2 = Player("o");
 
     let activePlayer = player1;
+
+    const getBoard = () => {
+        return board;
+    }
 
     const switchTurn = () => {
         activePlayer = (activePlayer === player1 ? player2 : player1);
@@ -97,6 +103,33 @@ const GameController = () => {
     const getActivePlayer = () => {
         return activePlayer;
     }
-    return {switchTurn, playRound, getActivePlayer};
+
+    const clearBoard =() => {
+        board.clear;
+    }
+    return {switchTurn, playRound, getActivePlayer, clearBoard, getBoard};
 };
  
+const ScreenController = () => {
+    const game = GameController();
+    const cells = document.querySelector('.field');
+
+
+    const clickHandler = () => {
+        const board = game.getBoard();
+        const activePlayer = game.getActivePlayer();
+
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', board.populateField(activePlayer, index));
+        })
+    }
+
+    const updateScreen = () => {
+        const board = game.getBoard();
+
+        cells.forEach((cell, index) => {
+            cell.innerHTML = board.getField(index);
+        })
+    }
+
+}
