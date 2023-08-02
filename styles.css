@@ -5,7 +5,7 @@
     align-items: center;
 }
 
-.cell{
+.field{
     display: flex;
     background-color: aliceblue;
     border: 2px solid black;

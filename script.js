@@ -87,5 +87,16 @@ const GameController = () => {
         activePlayer = (activePlayer === player1 ? player2 : player1);
     }
 
+    const playRound = (player, index) => {
+        board.populateField(player, index);
+
+        board.checkResult();
+        switchTurn();
+    }
+
+    const getActivePlayer = () => {
+        return activePlayer;
+    }
+    return {switchTurn, playRound, getActivePlayer};
 };
  
