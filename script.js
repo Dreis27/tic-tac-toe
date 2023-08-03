@@ -18,6 +18,8 @@
  const GameBoard = () => {
 
     const board = ["","","","","","","","",""];
+
+
     const setField = (index, symbol) =>{
         if (index > board.length) return;
         board[index] = symbol;
@@ -34,17 +36,22 @@
     }
 
     const populateField = (player,index) => {
-        if(board[index]!=="" || index > 8) return;
+        if(index > 8) return;
+
         board[index] = player.getSymbol();
 
         console.log(board);
+    }
+
+    const getRoundCounter = () => {
+        return roundCounter;
     }
 
     const getBoard = () => {
         return board;
     }
 
-    return{getBoard, setField, getField, clear, populateField};
+    return{getRoundCounter, getBoard, setField, getField, clear, populateField};
  };
 
 
@@ -55,6 +62,7 @@ const GameController = () => {
     const player2 = Player("O");
 
     let activePlayer = player1;
+    let roundCounter = 0;
 
     const getBoard = () => {
         return board;
@@ -65,9 +73,18 @@ const GameController = () => {
     }
 
     const playRound = (index) => {
+        roundCounter++;
+    
         board.populateField(activePlayer, index);
 
-        checkResult();
+        if(checkResult() === true){
+            console.log(activePlayer.getSymbol() + " WON!");
+            return true;
+        }
+
+        if (roundCounter>8){
+            console.log("DRAW!");
+        }
         switchTurn();
     }
 
@@ -81,7 +98,7 @@ const GameController = () => {
         if(((myBoard[0]==myBoard[1] && myBoard[1]==myBoard[2]) && myBoard[0]!=="")||((myBoard[3]==myBoard[4] && myBoard[4]==myBoard[5]) && myBoard[3]!=="")||((myBoard[6]==myBoard[7] && myBoard[7]==myBoard[8]) && myBoard[6]!=="")
             || ((myBoard[0]==myBoard[3] && myBoard[3]==myBoard[6]) && myBoard[0]!=="")|| ((myBoard[1]==myBoard[4] && myBoard[4]==myBoard[7]) && myBoard[1]!=="")||((myBoard[2]==myBoard[5] && myBoard[5]==myBoard[8]) && myBoard[2]!=="")
             || ((myBoard[0]==myBoard[4] && myBoard[4]==myBoard[8]) && myBoard[0]!=="")|| ((myBoard[2]==myBoard[4] && myBoard[4]==myBoard[6]) && myBoard[2]!=="")){
-                console.log(activePlayer.getSymbol() + ' won!');
+                return true;
             }
     }
 
@@ -101,6 +118,7 @@ const ScreenController = () => {
 
         cells.forEach(function(item, index) {
             item.addEventListener('click', function() {
+            if (board.getBoard()[index]!=='') return;
               game.playRound(index);
               updateScreen();
             });
