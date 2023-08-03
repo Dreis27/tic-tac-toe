@@ -41,7 +41,7 @@
         if((board[0]==board[1] && board[1]==board[2] && board[0]!=="")||(board[3]==board[4] && board[4]==board[5] && board[3]!=="")||(board[6]==board[7] && board[7]==board[8] && board[6]!=="")
             || (board[0]==board[3] && board[3]==board[6] && board[0]!=="")|| (board[1]==board[4] && board[4]==board[7] && board[1]!=="")||(board[2]==board[5] && board[5]==board[8] && board[2]!=="")
             || (board[0]==board[4] && board[4]==board[8] && board[0]!=="")|| (board[2]==board[4] && board[4]==board[6] && board[2]!=="")){
-                return symbol + " won";
+                console.log()
             }
     }
 
@@ -64,15 +64,23 @@ const GameController = () => {
         activePlayer = (activePlayer === player1 ? player2 : player1);
     }
 
-    const playRound = (player, index) => {
-        board.populateField(player, index);
+    const playRound = (index) => {
+        board.populateField(activePlayer, index);
 
-        board.checkResult();
+        checkResult();
         switchTurn();
     }
 
     const getActivePlayer = () => {
         return activePlayer;
+    }
+
+    const checkResult = () => {
+        if((board[0]==board[1] && board[1]==board[2] && board[0]!=="")||(board[3]==board[4] && board[4]==board[5] && board[3]!=="")||(board[6]==board[7] && board[7]==board[8] && board[6]!=="")
+            || (board[0]==board[3] && board[3]==board[6] && board[0]!=="")|| (board[1]==board[4] && board[4]==board[7] && board[1]!=="")||(board[2]==board[5] && board[5]==board[8] && board[2]!=="")
+            || (board[0]==board[4] && board[4]==board[8] && board[0]!=="")|| (board[2]==board[4] && board[4]==board[6] && board[2]!=="")){
+                console.log(activePlayer + 'won!');
+            }
     }
 
     const clearBoard =() => {
@@ -88,9 +96,12 @@ const ScreenController = () => {
         const board = game.getBoard();
         const activePlayer = game.getActivePlayer();
 
-        cells.forEach((cell, index) => {
-            cell.addEventListener('click', board.populateField(activePlayer,index));
-        })
+        cells.forEach(function(item, index) {
+            item.addEventListener('click', function() {
+              game.playRound(index);
+              updateScreen();
+            });
+          });
 
 
     const updateScreen = () => {
