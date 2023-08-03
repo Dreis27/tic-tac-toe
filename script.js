@@ -19,7 +19,6 @@
 
     const board = ["","","","","","","","",""];
 
-
     const setField = (index, symbol) =>{
         if (index > board.length) return;
         board[index] = symbol;
@@ -39,8 +38,6 @@
         if(index > 8) return;
 
         board[index] = player.getSymbol();
-
-        console.log(board);
     }
 
     const getRoundCounter = () => {
@@ -60,6 +57,7 @@ const GameController = () => {
     const board = GameBoard();
     const player1 = Player("X");
     const player2 = Player("O");
+    let finished = false;
 
     let activePlayer = player1;
     let roundCounter = 0;
@@ -73,13 +71,16 @@ const GameController = () => {
     }
 
     const playRound = (index) => {
+        if (finished === true) return;
+
         roundCounter++;
     
         board.populateField(activePlayer, index);
 
         if(checkResult() === true){
+            finished = true;
             console.log(activePlayer.getSymbol() + " WON!");
-            return true;
+            return;
         }
 
         if (roundCounter>8){
